@@ -10,22 +10,22 @@ steps:
   - name: 'gcr.io/cloud-builders/docker'
     args: ['push', 'gcr.io/$PROJECT_ID/auth-service']
 
-  # Step 3: Deploy to Cloud Run with env vars from Secret Manager
+  # Step 3: Deploy to Cloud Run
   - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
-    entrypoint: 'bash'
+    entrypoint: bash
     args:
       - -c
       - |
-        # Download secret from Secret Manager
+        # Fetch .env secret from Secret Manager
         gcloud secrets versions access latest --secret=ENV > .env
 
-        # Export all key=value pairs into environment
+        # Load env vars
         export $(grep -v '^#' .env | xargs)
 
-        # Deploy to Cloud Run using extracted env vars
+        # Deploy to Cloud Run, using escaped \$ to prevent Cloud Build substitution
         gcloud run deploy auth-service \
           --image gcr.io/$PROJECT_ID/auth-service \
           --platform managed \
           --region us-central1 \
           --allow-unauthenticated \
-          --set-env-vars "MONGO_URI=$MONGO_URI,JWT_SECRET=$JWT_SECRET,JWT_EXPIRES_IN=$JWT_EXPIRES_IN"
+          --set-env-vars "MONGO_URI=\${MONGO_URI},JWT_SECRET=\${JWT_SECRET},JWT_EXPIRES_IN=\${JWT_EXPIRES_IN}"
