@@ -16,13 +16,13 @@ steps:
     args:
       - -c
       - |
-        # Fetch .env secret from Secret Manager
+        # ✅ Fetch secret into .env
         gcloud secrets versions access latest --secret=ENV > .env
 
-        # Load env vars
+        # ✅ Export each variable from the .env file
         export $(grep -v '^#' .env | xargs)
 
-        # Deploy to Cloud Run, using escaped \$ to prevent Cloud Build substitution
+        # ✅ Deploy using escaped \$ to avoid Cloud Build substitutions
         gcloud run deploy auth-service \
           --image gcr.io/$PROJECT_ID/auth-service \
           --platform managed \
