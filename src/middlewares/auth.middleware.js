@@ -9,7 +9,7 @@ module.exports = (req, res, next) => {
 
   try {
     // Offline/local verification using shared secret (HS256)
-    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    const decoded = jwt.verify(token, process.env.JWT_SECRET || "your_jwt_secret_here");
     req.user = decoded;
 
     // Example: simple RBAC check (optional)
