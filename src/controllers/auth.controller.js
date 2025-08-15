@@ -2,6 +2,10 @@ const User = require("../models/user.model");
 const generateToken = require("../utils/generateToken");
 
 exports.register = async (req, res) => {
+  console.log("🚀 /login request body:", req.body);
+  console.log("🔐 JWT_SECRET:", process.env.JWT_SECRET);
+  console.log("📦 MONGO_URI:", process.env.MONGO_URI?.slice(0, 20));
+
   try {
     const { name, email, password } = req.body;
     let user = await User.findOne({ email });
