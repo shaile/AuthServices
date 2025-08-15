@@ -7,17 +7,22 @@ steps:
   - name: 'gcr.io/cloud-builders/docker'
     args: ['push', 'gcr.io/$PROJECT_ID/auth-service']
 
-  # Step 3: Deploy to Cloud Run
+  # Step 3: Deploy to Cloud Run with env vars
   - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
-    entrypoint: 'gcloud'
-    args: [
-      'run', 'deploy', 'auth-service',
-      '--image', 'gcr.io/$PROJECT_ID/auth-service',
-      '--platform', 'managed',
-      '--region', 'us-central1',
-      '--allow-unauthenticated'
-    ]
+    entrypoint: 'bash'
+    args:
+      - -c
+      - |
+        # Fetch secret ENV from Secret Manager
+        gcloud secrets versions access latest --secret=ENV > .env
 
-# Declare the image so Cloud Build can track it
-images:
-  - 'gcr.io/$PROJECT_ID/auth-service'
+        # Export env vars for Cloud Run deploy command
+        export $(grep -v '^#' .env | xargs)
+
+        # Deploy passing env vars explicitly
+        gcloud run deploy auth-service \
+          --image gcr.io/$PROJECT_ID/auth-service \
+          --platform managed \
+          --region us-central1 \
+          --allow-unauthenticated \
+          --set-env-vars MONGO_URI=$MONGO_URI,JWT_SECRET=$JWT_SECRET,JWT_EXPIRES_IN=$JWT_EXPIRES_IN
