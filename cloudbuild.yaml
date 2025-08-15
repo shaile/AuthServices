@@ -27,4 +27,4 @@ steps:
           --platform managed \
           --region us-central1 \
           --allow-unauthenticated \
-          --set-env-vars MONGO_URI=$MONGO_URI,JWT_SECRET=$JWT_SECRET,JWT_EXPIRES_IN=$JWT_EXPIRES_IN
+          --set-env-vars MONGO_URI=${MONGO_URI},JWT_SECRET=${JWT_SECRET},JWT_EXPIRES_IN=${JWT_EXPIRES_IN}
