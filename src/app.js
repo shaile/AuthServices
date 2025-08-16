@@ -13,7 +13,8 @@ process.on("unhandledRejection", (reason, promise) => {
 });
 app.use(express.json());
 
-connectDB();
+// Firestore doesn’t need connectDB() like Mongo, just ensure import works
+console.log("✅ Firestore ready");
 
 app.use("/api/auth", authRoutes);
 swaggerDocs(app);

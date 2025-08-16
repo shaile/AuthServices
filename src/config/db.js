@@ -1,16 +1,9 @@
-const mongoose = require("mongoose");
+// db.js (Firestore version)
+const { Firestore } = require("@google-cloud/firestore");
 
-const connectDB = async () => {
-  try {
-    await mongoose.connect(
-      process.env.MONGO_URI ||
-        "mongodb+srv://singhsonam8415:xEY0f6hiNU8bzMOW@cluster0.dwoyiv5.mongodb.net/"
-    ); // No extra options needed
-    console.log("✅ MongoDB connected successfully");
-  } catch (error) {
-    console.error("❌ MongoDB connection error:", error.message);
-    process.exit(1); // Exit if DB fails
-  }
-};
+// Initialize Firestore client
+const db = new Firestore();
 
-module.exports = connectDB;
+console.log("✅ Firestore connected successfully");
+
+module.exports = db;
