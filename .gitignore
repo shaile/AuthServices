@@ -15,7 +15,6 @@ logs
 # Environment
 .env
 .env.local
-.env.*.local
 
 # GCP / Cloud
 # Service account keys
