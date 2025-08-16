@@ -22,4 +22,4 @@ steps:
           --platform managed \
           --region us-central1 \
           --allow-unauthenticated \
-          --update-secrets JWT_SECRET=JWT_SECRET:latest,JWT_EXPIRES_IN=JWT_EXPIRES_IN:latest
+          --update-secrets JWT_SECRET=JWT_SECRET:latest
