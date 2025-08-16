@@ -1,20 +1,20 @@
-# Use official Node.js LTS image
-FROM node:20-slim
+# Use Node.js LTS
+FROM node:18
 
-# Set working directory
+# Set working dir
 WORKDIR /app
 
-# Copy package.json and package-lock.json if exists
+# Copy package files
 COPY package*.json ./
 
-# Install only production dependencies
-RUN npm install --production
+# Install dependencies
+RUN npm install --omit=dev
 
-# Copy the rest of the app
+# Copy all source
 COPY . .
 
-# Expose the port Cloud Run expects
-ENV PORT=8080
+# Expose port 8080
+EXPOSE 8080
 
-# Start the application in production mode
-CMD ["npm", "start"]
+# Start app
+CMD ["node", "server.js"]
