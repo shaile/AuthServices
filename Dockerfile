@@ -22,4 +22,5 @@ RUN echo "---- FILES IN /app ----" && ls -alh /app && \
 ENV PORT=8080
 
 # Start the application
-CMD ["npm", "start"]
+CMD ["sh", "-c", "echo '---- RUNTIME DEBUG ----' && pwd && ls -alh && npm start"]
+
